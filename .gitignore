@@ -1,2 +1,6 @@
-.vercel
+node_modules/
+build/
+cache/
+artifacts/
 .env
+.DS_Store
