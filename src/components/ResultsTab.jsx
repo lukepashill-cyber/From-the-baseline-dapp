@@ -1,108 +1,64 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const SOFASCORE_BASE_URL = 'https://api.sofascore.com/api/v1';
-
-export default function ResultsTab({ matches, loading, onRefresh }) {
-  const [liveMatches, setLiveMatches] = useState([]);
+export default function ResultsTab() {
+  const [matches, setMatches] = useState([]);
   const [filter, setFilter] = useState(0);
-  const [sofaScoreData, setSofaScoreData] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    fetchLiveScoresFromSofaScore();
-  }, []);
+  useEffect(() => { load(); const t = setInterval(load, 30000); return () => clearInterval(t); }, []);
 
-  const fetchLiveScoresFromSofaScore = async () => {
+  const load = async () => {
     try {
-      const response = await axios.get(`${SOFASCORE_BASE_URL}/sport/tennis/events/live`);
-      const data = {};
-      response.data.events?.forEach(event => {
-        data[event.id] = {
-          homeScore: event.homeScore?.display || '0',
-          awayScore: event.awayScore?.display || '0',
-          homePoint: event.homeScore?.point || '',
-          awayPoint: event.awayScore?.point || '',
-          isLive: event.status?.type === 'inprogress',
-        };
-      });
-      setSofaScoreData(data);
-    } catch (error) {
-      console.error('Error fetching live scores:', error);
-    }
+      const r = await axios.get('/api/matches');
+      setMatches(r.data);
+      setError(null);
+    } catch (e) {
+      setError('Could not load matches. Try again shortly.');
+    } finally { setLoading(false); }
   };
 
-  const filterMatches = () => {
-    let result = matches;
-    if (filter === 1) result = result.filter(m => m.isLive);
-    if (filter === 2) result = result.filter(m => m.category.includes('ATP') || m.category.includes('WTA'));
-    if (filter === 3) result = result.filter(m => m.category.includes('ITF') || m.category.includes('Challenger'));
-    return result;
-  };
+  const shown = matches.filter(m => {
+    if (filter === 1) return m.isLive;
+    if (filter === 2) return m.category.includes('ATP') || m.category.includes('WTA');
+    if (filter === 3) return m.category.includes('ITF') || m.category.includes('Challenger');
+    return true;
+  });
 
   return (
     <div className="results-tab">
       <div className="filters">
-        <button className={filter === 0 ? 'active' : ''} onClick={() => setFilter(0)}>
-          All
-        </button>
-        <button className={filter === 1 ? 'active' : ''} onClick={() => setFilter(1)}>
-          Live
-        </button>
-        <button className={filter === 2 ? 'active' : ''} onClick={() => setFilter(2)}>
-          ATP/WTA
-        </button>
-        <button className={filter === 3 ? 'active' : ''} onClick={() => setFilter(3)}>
-          Challenger/ITF
-        </button>
+        {['All','Live','ATP/WTA','Challenger/ITF'].map((l,i)=>(
+          <button key={i} className={filter===i?'active':''} onClick={()=>setFilter(i)}>{l}</button>
+        ))}
       </div>
-
-      <button onClick={onRefresh} disabled={loading} className="refresh-button">
-        {loading ? 'Refreshing...' : '🔄 Refresh'}
-      </button>
-
+      <button onClick={load} disabled={loading} className="refresh-button">{loading?'Refreshing...':'🔄 Refresh'}</button>
+      {error && <div className="error-banner">{error}</div>}
       <div className="matches-list">
-        {filterMatches().length === 0 ? (
-          <div className="no-matches">No matches found</div>
-        ) : (
-          filterMatches().map(match => {
-            const liveData = sofaScoreData[match.id] || {};
-            return (
-              <div key={match.id} className="match-card">
-                <div className="match-header">
-                  <span className="tournament">{match.tournament} • {match.category}</span>
-                  <span className={`status ${match.isLive ? 'live' : ''}`}>
-                    {match.isLive ? '● LIVE' : match.status}
-                  </span>
-                </div>
-
-                <div className="players">
-                  <div className="player-row">
-                    <span className={`player ${match.hasBritish ? 'british' : ''}`}>
-                      {match.homePlayer}
-                    </span>
-                    <span className="score">{liveData.homeScore || match.homeScore}</span>
-                  </div>
-                  <div className="player-row">
-                    <span className="player">{match.awayPlayer}</span>
-                    <span className="score">{liveData.awayScore || match.awayScore}</span>
-                  </div>
-                </div>
-
-                {match.isLive && liveData.homePoint && (
-                  <div className="live-points">
-                    <span className="point">{liveData.homePoint}</span>
-                    <span className="divider">-</span>
-                    <span className="point">{liveData.awayPoint}</span>
-                  </div>
-                )}
-
-                <div className="match-meta">
-                  <small>Last updated: {new Date(match.lastUpdated * 1000).toLocaleTimeString()}</small>
-                </div>
+        {loading ? <div className="no-matches">Loading matches...</div> :
+         shown.length === 0 ? <div className="no-matches">No British matches in the last 24 hours.</div> :
+         shown.map(m => (
+          <div key={m.id} className="match-card">
+            <div className="match-header">
+              <span className="tournament">{m.tournament} • {m.category}</span>
+              <span className={`status ${m.isLive?'live':''}`}>{m.isLive?'● LIVE':m.status}</span>
+            </div>
+            <div className="players">
+              <div className="player-row">
+                <span className={`player ${m.hasBritish?'british':''}`}>{m.homePlayer}</span>
+                <span className="score">{m.homeScore}</span>
               </div>
-            );
-          })
-        )}
+              <div className="player-row">
+                <span className="player">{m.awayPlayer}</span>
+                <span className="score">{m.awayScore}</span>
+              </div>
+            </div>
+            {m.isLive && m.homePoint && (
+              <div className="live-points"><span className="point">{m.homePoint}</span><span className="divider">-</span><span className="point">{m.awayPoint}</span></div>
+            )}
+          </div>
+        ))}
       </div>
     </div>
   );
