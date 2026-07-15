@@ -2,12 +2,16 @@
   "name": "from-the-baseline-dapp",
   "version": "1.0.0",
   "private": true,
+  "engines": {
+    "node": "22.x"
+  },
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
     "ethers": "^6.7.1",
-    "axios": "^1.4.0"
+    "axios": "^1.4.0",
+    "ajv": "^8.12.0"
   },
   "scripts": {
     "start": "react-scripts start",
