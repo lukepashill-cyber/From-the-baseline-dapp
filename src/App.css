@@ -1,0 +1,615 @@
+:root {
+  --navy: #1A3A52;
+  --navy-dark: #12293B;
+  --gold: #D4A843;
+  --red: #C0392B;
+  --off-white: #F7F5F0;
+  --text-primary: #333;
+  --text-secondary: #666;
+  --border: #ddd;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--off-white);
+  color: var(--text-primary);
+}
+
+.wallet-connect-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--navy), var(--navy-dark));
+  padding: 20px;
+}
+
+.wallet-connect-card {
+  background: white;
+  border-radius: 16px;
+  padding: 40px;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.wallet-connect-card h1 {
+  color: var(--gold);
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+.wallet-connect-card .subtitle {
+  color: var(--text-secondary);
+  font-size: 14px;
+  letter-spacing: 1px;
+  margin-bottom: 24px;
+}
+
+.tennis-icon {
+  font-size: 60px;
+  margin: 20px 0;
+}
+
+.wallet-connect-card h2 {
+  font-size: 20px;
+  color: var(--navy);
+  margin-bottom: 12px;
+}
+
+.description {
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+  line-height: 1.6;
+}
+
+.connect-button {
+  background: var(--navy);
+  color: white;
+  border: none;
+  padding: 14px 32px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom: 24px;
+  transition: background 0.3s;
+}
+
+.connect-button:hover {
+  background: var(--navy-dark);
+}
+
+.connect-button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.error-message {
+  background: #fee;
+  color: var(--red);
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.info-box {
+  background: var(--off-white);
+  padding: 16px;
+  border-radius: 8px;
+  text-align: left;
+}
+
+.info-box h3 {
+  font-size: 14px;
+  color: var(--navy);
+  margin-bottom: 8px;
+}
+
+.info-box ul {
+  list-style: none;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.info-box li {
+  padding: 4px 0;
+}
+
+/* Main App */
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--off-white);
+}
+
+.header {
+  background: var(--navy);
+  color: white;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-content h1 {
+  color: var(--gold);
+  font-size: 24px;
+  margin-bottom: 4px;
+}
+
+.header-content p {
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+.account-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+}
+
+.disconnect-btn {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background 0.3s;
+}
+
+.disconnect-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.error-banner {
+  background: #fee;
+  color: var(--red);
+  padding: 12px 20px;
+  font-size: 14px;
+  border-bottom: 1px solid #fcc;
+}
+
+.content {
+  flex: 1;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.bottom-nav {
+  display: flex;
+  justify-content: space-around;
+  background: var(--navy-dark);
+  padding: 12px 0;
+  border-top: 1px solid var(--border);
+}
+
+.bottom-nav button {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 8px 16px;
+  font-size: 14px;
+  transition: color 0.3s;
+}
+
+.bottom-nav button.active {
+  color: var(--gold);
+  font-weight: 600;
+}
+
+.bottom-nav button:hover {
+  color: var(--gold);
+}
+
+/* Results Tab */
+.results-tab {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.filters button,
+.refresh-button {
+  background: white;
+  border: 1px solid var(--border);
+  padding: 10px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s;
+}
+
+.filters button.active {
+  background: var(--navy);
+  color: white;
+  border-color: var(--navy);
+}
+
+.filters button:hover {
+  border-color: var(--navy);
+  color: var(--navy);
+}
+
+.refresh-button {
+  align-self: flex-start;
+  background: var(--navy);
+  color: white;
+  border: none;
+  font-weight: 600;
+}
+
+.refresh-button:hover {
+  background: var(--navy-dark);
+}
+
+.refresh-button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.matches-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.match-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.match-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  font-size: 12px;
+}
+
+.tournament {
+  color: var(--text-secondary);
+}
+
+.status {
+  background: #eee;
+  color: var(--navy);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.status.live {
+  background: var(--red);
+  color: white;
+}
+
+.players {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.player-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.player {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.player.british {
+  font-weight: 600;
+  color: var(--navy);
+}
+
+.score {
+  background: var(--off-white);
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-weight: 600;
+  color: var(--navy);
+}
+
+.live-points {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  font-size: 14px;
+}
+
+.point {
+  background: var(--red);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.match-meta {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #999;
+}
+
+.no-matches {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-secondary);
+}
+
+/* Rankings Tab */
+.rankings-tab {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.category-tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.category-tabs button {
+  background: white;
+  border: 1px solid var(--border);
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s;
+}
+
+.category-tabs button.active {
+  background: var(--navy);
+  color: white;
+  border-color: var(--navy);
+}
+
+.rankings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ranking-row {
+  background: white;
+  border: 1px solid var(--border);
+  padding: 16px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.rank {
+  font-weight: 600;
+  color: var(--gold);
+  min-width: 40px;
+}
+
+.name {
+  flex: 1;
+  font-weight: 500;
+}
+
+.points {
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+/* Podcast Tab */
+.podcast-tab {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.podcast-header {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.podcast-header h2 {
+  color: var(--navy);
+  font-size: 24px;
+  margin-bottom: 4px;
+}
+
+.podcast-header p {
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.episodes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.episode-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.episode-date {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+.episode-card h3 {
+  color: var(--navy);
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.episode-card p {
+  color: var(--text-secondary);
+  font-size: 14px;
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.listen-btn {
+  display: inline-block;
+  background: var(--navy);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+
+.listen-btn:hover {
+  background: var(--navy-dark);
+}
+
+/* About Tab */
+.about-tab {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 20px 0;
+}
+
+.about-header {
+  text-align: center;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.about-header h1 {
+  color: var(--gold);
+  font-size: 28px;
+  margin-bottom: 4px;
+}
+
+.tagline {
+  color: var(--text-secondary);
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+
+.about-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.about-content section {
+  background: white;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.about-content h2 {
+  color: var(--navy);
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+
+.about-content p {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+.about-content ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.about-content li {
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.social-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.social-links a {
+  background: var(--off-white);
+  color: var(--navy);
+  padding: 10px 16px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.social-links a:hover {
+  background: var(--navy);
+  color: white;
+}
+
+.loading {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+  }
+
+  .account-info {
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  .match-card,
+  .episode-card,
+  .about-content section {
+    padding: 12px;
+  }
+
+  .player-row {
+    font-size: 14px;
+  }
+}
